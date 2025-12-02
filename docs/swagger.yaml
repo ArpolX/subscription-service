@@ -38,7 +38,7 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: CRUDL-операции операции по работке с подписками.
+  description: CRUDL-операции по работке с подписками.
   title: subscription-service
   version: "1.0"
 paths:
@@ -48,9 +48,9 @@ paths:
       - application/json
       description: Создание новой подписки, subscription_id - primary key. user_id
         и start_date можно не указывать, на них стоит default. end_date также можно
-        не указывать, в бд будет null
+        не указывать, в бд допускается null
       parameters:
-      - description: user_id и start_date можно не заполнять
+      - description: Заполните поля согласно описанию
         in: body
         name: subscription
         schema:
@@ -63,6 +63,10 @@ paths:
           schema:
             type: string
         "400":
+          description: Ошибка
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
+        "500":
           description: Ошибка
           schema:
             $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
@@ -85,7 +89,7 @@ paths:
           description: Успешное удаление
           schema:
             type: string
-        "400":
+        "500":
           description: Ошибка
           schema:
             $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
@@ -108,7 +112,7 @@ paths:
           description: Успешное получение подписки
           schema:
             $ref: '#/definitions/subscription-service_internal_entity.SubscriptionResponse'
-        "400":
+        "500":
           description: Ошибка
           schema:
             $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
@@ -127,7 +131,7 @@ paths:
             items:
               $ref: '#/definitions/subscription-service_internal_entity.SubscriptionResponse'
             type: array
-        "400":
+        "500":
           description: Ошибка
           schema:
             $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
@@ -140,9 +144,9 @@ paths:
       - application/json
       description: Обновление подписки, subscription_id - primary key. service_name,
         user_id не учитывается. start_date можно не указывать, стоит default. end_date
-        также можно не указывать, в бд будет null
+        также можно не указывать, в бд допускается null
       parameters:
-      - description: service_name, user_id не учитывается. start_date можно не указывать
+      - description: Заполните поля согласно описанию
         in: body
         name: subscription
         schema:
@@ -155,6 +159,10 @@ paths:
           schema:
             type: string
         "400":
+          description: Ошибка
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
+        "500":
           description: Ошибка
           schema:
             $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'

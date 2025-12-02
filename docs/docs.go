@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/subscription/create": {
             "post": {
-                "description": "Создание новой подписки, subscription_id - primary key. user_id и start_date можно не указывать, на них стоит default. end_date также можно не указывать, в бд будет null",
+                "description": "Создание новой подписки, subscription_id - primary key. user_id и start_date можно не указывать, на них стоит default. end_date также можно не указывать, в бд допускается null",
                 "consumes": [
                     "application/json"
                 ],
@@ -30,7 +30,7 @@ const docTemplate = `{
                 "summary": "Регистрация новой подписки",
                 "parameters": [
                     {
-                        "description": "user_id и start_date можно не заполнять",
+                        "description": "Заполните поля согласно описанию",
                         "name": "subscription",
                         "in": "body",
                         "schema": {
@@ -46,6 +46,12 @@ const docTemplate = `{
                         }
                     },
                     "400": {
+                        "description": "Ошибка",
+                        "schema": {
+                            "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
+                        }
+                    },
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -80,7 +86,7 @@ const docTemplate = `{
                             "type": "string"
                         }
                     },
-                    "400": {
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -115,7 +121,7 @@ const docTemplate = `{
                             "$ref": "#/definitions/subscription-service_internal_entity.SubscriptionResponse"
                         }
                     },
-                    "400": {
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -144,7 +150,7 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "400": {
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -155,7 +161,7 @@ const docTemplate = `{
         },
         "/subscription/update": {
             "put": {
-                "description": "Обновление подписки, subscription_id - primary key. service_name, user_id не учитывается. start_date можно не указывать, стоит default. end_date также можно не указывать, в бд будет null",
+                "description": "Обновление подписки, subscription_id - primary key. service_name, user_id не учитывается. start_date можно не указывать, стоит default. end_date также можно не указывать, в бд допускается null",
                 "consumes": [
                     "application/json"
                 ],
@@ -168,7 +174,7 @@ const docTemplate = `{
                 "summary": "Обновление подписки",
                 "parameters": [
                     {
-                        "description": "service_name, user_id не учитывается. start_date можно не указывать",
+                        "description": "Заполните поля согласно описанию",
                         "name": "subscription",
                         "in": "body",
                         "schema": {
@@ -184,6 +190,12 @@ const docTemplate = `{
                         }
                     },
                     "400": {
+                        "description": "Ошибка",
+                        "schema": {
+                            "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
+                        }
+                    },
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -258,7 +270,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{"http"},
 	Title:            "subscription-service",
-	Description:      "CRUDL-операции операции по работке с подписками.",
+	Description:      "CRUDL-операции по работке с подписками.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	//LeftDelim:        "{{",

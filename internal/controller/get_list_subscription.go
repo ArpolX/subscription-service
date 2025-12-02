@@ -14,24 +14,26 @@ import (
 // @Tags subscription
 // @Produce json
 // @Success 200 {object} []entity.SubscriptionResponse "Успешное получение подписки"
-// @Failure 400 {object} entity.ErrorResponse "Ошибка"
+// @Failure 500 {object} entity.ErrorResponse "Ошибка"
 // @Router /subscription/getList [get]
 func (c *ControllerImpl) GetListSubscription(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	sRespList, err := c.Srv.GetListSubscription(ctx)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		if errors.Is(err, Error.NOT_FOUND) {
 			CreateError("NOT_FOUND", Error.NOT_FOUND.Error(), w)
 			return
 		}
 		c.Log.Error("Ошибка обработки пути /subscription/getList, метод GetListSubscription", zap.Error(err))
-		CreateError("400", err.Error(), w)
+		CreateError("500", err.Error(), w)
 		return
 	}
 
 	if err := Json.NewEncoder(w).Encode(&sRespList); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		c.Log.Error("Ошибка обработки пути /subscription/getList, метод GetListSubscription", zap.Error(err))
-		CreateError("400", err.Error(), w)
+		CreateError("500", err.Error(), w)
 	}
 }

@@ -11,13 +11,14 @@ import (
 )
 
 // @Summary Обновление подписки
-// @Description Обновление подписки, subscription_id - primary key. service_name, user_id не учитывается. start_date можно не указывать, стоит default. end_date также можно не указывать, в бд будет null
+// @Description Обновление подписки, subscription_id - primary key. service_name, user_id не учитывается. start_date можно не указывать, стоит default. end_date также можно не указывать, в бд допускается null
 // @Tags subscription
 // @Accept json
 // @Produce plain
-// @Param subscription body entity.SubscriptionRequest false "service_name, user_id не учитывается. start_date можно не указывать"
+// @Param subscription body entity.SubscriptionRequest false "Заполните поля согласно описанию"
 // @Success 200 {string} Info "Успешное обновление"
 // @Failure 400 {object} entity.ErrorResponse "Ошибка"
+// @Failure 500 {object} entity.ErrorResponse "Ошибка"
 // @Router /subscription/update [put]
 func (c *ControllerImpl) UpdateSubscription(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -25,18 +26,20 @@ func (c *ControllerImpl) UpdateSubscription(w http.ResponseWriter, r *http.Reque
 	var s entity.SubscriptionRequest
 
 	if err := decoder.Decode(&s); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		c.Log.Error("Ошибка обработки пути /subscription/update, метод UpdateSubscription", zap.Error(err))
 		CreateError("400", fmt.Sprintf("Ошибка валидации запроса, проверьте теги: %v", err), w)
 		return
 	}
 
 	if err := c.Srv.UpdateSubscription(ctx, s); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		if errors.Is(err, Error.NOT_FOUND) {
 			CreateError("NOT_FOUND", Error.NOT_FOUND.Error(), w)
 			return
 		}
 		c.Log.Error("Ошибка обработки пути /subscription/update, метод UpdateSubscription", zap.Error(err))
-		CreateError("400", err.Error(), w)
+		CreateError("500", err.Error(), w)
 		return
 	}
 

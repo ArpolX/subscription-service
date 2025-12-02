@@ -7,7 +7,7 @@ import (
 )
 
 // @title subscription-service
-// @description CRUDL-операции операции по работке с подписками.
+// @description CRUDL-операции по работке с подписками.
 // @version 1.0
 
 // @host localhost:8080

@@ -4,7 +4,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "CRUDL-операции операции по работке с подписками.",
+        "description": "CRUDL-операции по работке с подписками.",
         "title": "subscription-service",
         "contact": {},
         "version": "1.0"
@@ -14,7 +14,7 @@
     "paths": {
         "/subscription/create": {
             "post": {
-                "description": "Создание новой подписки, subscription_id - primary key. user_id и start_date можно не указывать, на них стоит default. end_date также можно не указывать, в бд будет null",
+                "description": "Создание новой подписки, subscription_id - primary key. user_id и start_date можно не указывать, на них стоит default. end_date также можно не указывать, в бд допускается null",
                 "consumes": [
                     "application/json"
                 ],
@@ -27,7 +27,7 @@
                 "summary": "Регистрация новой подписки",
                 "parameters": [
                     {
-                        "description": "user_id и start_date можно не заполнять",
+                        "description": "Заполните поля согласно описанию",
                         "name": "subscription",
                         "in": "body",
                         "schema": {
@@ -43,6 +43,12 @@
                         }
                     },
                     "400": {
+                        "description": "Ошибка",
+                        "schema": {
+                            "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
+                        }
+                    },
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -77,7 +83,7 @@
                             "type": "string"
                         }
                     },
-                    "400": {
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -112,7 +118,7 @@
                             "$ref": "#/definitions/subscription-service_internal_entity.SubscriptionResponse"
                         }
                     },
-                    "400": {
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -141,7 +147,7 @@
                             }
                         }
                     },
-                    "400": {
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
@@ -152,7 +158,7 @@
         },
         "/subscription/update": {
             "put": {
-                "description": "Обновление подписки, subscription_id - primary key. service_name, user_id не учитывается. start_date можно не указывать, стоит default. end_date также можно не указывать, в бд будет null",
+                "description": "Обновление подписки, subscription_id - primary key. service_name, user_id не учитывается. start_date можно не указывать, стоит default. end_date также можно не указывать, в бд допускается null",
                 "consumes": [
                     "application/json"
                 ],
@@ -165,7 +171,7 @@
                 "summary": "Обновление подписки",
                 "parameters": [
                     {
-                        "description": "service_name, user_id не учитывается. start_date можно не указывать",
+                        "description": "Заполните поля согласно описанию",
                         "name": "subscription",
                         "in": "body",
                         "schema": {
@@ -181,6 +187,12 @@
                         }
                     },
                     "400": {
+                        "description": "Ошибка",
+                        "schema": {
+                            "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
+                        }
+                    },
+                    "500": {
                         "description": "Ошибка",
                         "schema": {
                             "$ref": "#/definitions/subscription-service_internal_entity.ErrorResponse"
