@@ -1,0 +1,166 @@
+basePath: /
+definitions:
+  subscription-service_internal_entity.ErrorResponse:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  subscription-service_internal_entity.SubscriptionRequest:
+    properties:
+      end_date:
+        type: string
+      price:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      subscription_id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  subscription-service_internal_entity.SubscriptionResponse:
+    properties:
+      end_date:
+        type: string
+      price:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: CRUDL-операции операции по работке с подписками.
+  title: subscription-service
+  version: "1.0"
+paths:
+  /subscription/create:
+    post:
+      consumes:
+      - application/json
+      description: Создание новой подписки, subscription_id - primary key. user_id
+        и start_date можно не указывать, на них стоит default. end_date также можно
+        не указывать, в бд будет null
+      parameters:
+      - description: user_id и start_date можно не заполнять
+        in: body
+        name: subscription
+        schema:
+          $ref: '#/definitions/subscription-service_internal_entity.SubscriptionRequest'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Успешное создание
+          schema:
+            type: string
+        "400":
+          description: Ошибка
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
+      summary: Регистрация новой подписки
+      tags:
+      - subscription
+  /subscription/delete:
+    delete:
+      description: Удаление подписки по subscription_id
+      parameters:
+      - description: id подписки
+        in: query
+        name: subscription_id
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Успешное удаление
+          schema:
+            type: string
+        "400":
+          description: Ошибка
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
+      summary: Удаление подписки
+      tags:
+      - subscription
+  /subscription/get:
+    get:
+      description: Получение подписки по subscription_id
+      parameters:
+      - description: id подписки
+        in: query
+        name: subscription_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное получение подписки
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.SubscriptionResponse'
+        "400":
+          description: Ошибка
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
+      summary: Получение подписки
+      tags:
+      - subscription
+  /subscription/getList:
+    get:
+      description: Получение всех подписок
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное получение подписки
+          schema:
+            items:
+              $ref: '#/definitions/subscription-service_internal_entity.SubscriptionResponse'
+            type: array
+        "400":
+          description: Ошибка
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
+      summary: Получение всех подписок
+      tags:
+      - subscription
+  /subscription/update:
+    put:
+      consumes:
+      - application/json
+      description: Обновление подписки, subscription_id - primary key. service_name,
+        user_id не учитывается. start_date можно не указывать, стоит default. end_date
+        также можно не указывать, в бд будет null
+      parameters:
+      - description: service_name, user_id не учитывается. start_date можно не указывать
+        in: body
+        name: subscription
+        schema:
+          $ref: '#/definitions/subscription-service_internal_entity.SubscriptionRequest'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Успешное обновление
+          schema:
+            type: string
+        "400":
+          description: Ошибка
+          schema:
+            $ref: '#/definitions/subscription-service_internal_entity.ErrorResponse'
+      summary: Обновление подписки
+      tags:
+      - subscription
+schemes:
+- http
+swagger: "2.0"
